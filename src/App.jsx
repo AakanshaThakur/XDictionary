@@ -16,16 +16,23 @@ function App() {
   const [definition, setDefinition] = useState("");
 
   const handleSearch = () => {
+    const trimmedTerm = searchTerm.trim();
+    if (trimmedTerm === "") {
+      setDefinition("Word not found in the dictionary.");
+      return;
+    }
+
     const found = dictionary.find(
-      (entry) =>
-        entry.word.toLocaleLowerCase() === searchTerm.trim().toLowerCase()
+      (entry) => entry.word.toLowerCase() === trimmedTerm.toLowerCase()
     );
+
     if (found) {
       setDefinition(found.meaning);
     } else {
       setDefinition("Word not found in the dictionary.");
     }
   };
+
   return (
     <div style={{ padding: "2rem", fontFamily: "Arial" }}>
       <h1>Dictionary App</h1>
@@ -36,17 +43,11 @@ function App() {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
       <button onClick={handleSearch}>Search</button>
+      <h3 style={{ marginTop: "1rem" }}>Definition:</h3>
 
       {definition && (
         <div style={{ marginTop: "1rem" }}>
-          {definition === "Word not found in the dictionary." ? (
-            <p>{definition}</p>
-          ) : (
-            <>
-              <h3>Definition:</h3>
-              <p>{definition}</p>
-            </>
-          )}
+          <p>{definition}</p>
         </div>
       )}
     </div>
